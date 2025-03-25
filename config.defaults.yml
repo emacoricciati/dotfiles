@@ -1,0 +1,56 @@
+---
+brew_taps:
+  - domt4/autoupdate
+  - frdmn/formulas
+  - homebrew/cask-versions
+
+brew_packages:
+  - ansible
+  - asciinema
+  - bat
+  - bitwarden-cli
+  - composer
+  - coreutils
+  - ddig
+  - eza
+  - git-extras
+  - git-shift
+  - htop
+  - jq
+  - mas
+  - mitmproxy
+  - mtr
+  - ngrep
+  - nmap
+  - nodejs
+  - ruby
+  - terminal-notifier
+  - tmux
+  - uping
+  - wget
+  - zplug
+  - zsh
+
+cask_packages:
+  - appcleaner
+  - discord
+  - disk-inventory-x
+  - docker
+  - dropbox
+  - iterm2
+  - telegram
+  - visual-studio-code
+
+gem_packages:
+  - nokogiri
+
+mas_packages:
+  - 1451685025  # Wireguard
+  - 937984704   # Amphetamine
+
+npm_packages:
+  - nodemon
+
+pip_packages:
+  - beautifulsoup4
+  - docker

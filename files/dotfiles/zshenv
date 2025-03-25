@@ -1,0 +1,8 @@
+# Gray (temp) autosuggested string
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#aeaeae"
+
+# $EDITOR
+export EDITOR="vim"
+
+# Update locale
+export LANG="it_IT.UTF-8"

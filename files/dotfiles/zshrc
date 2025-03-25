@@ -1,0 +1,156 @@
+###
+### User configuration
+###
+
+# General
+setopt interactivecomments     # Comments in interactive shell
+setopt auto_cd                 # Just typing the directory name cd's into it
+setopt auto_menu               # Use menu completion after the second completion request
+setopt complete_in_word        # Only complete when completion is confirmed
+setopt correct                 # Try to autocorrect command
+setopt multios                 # Allow multiple input/output redirection
+setopt autopushd               # Makes cd, pushd (cd +1, cd -1)
+setopt prompt_subst            # Enable parameter expansion, command substitution, etc.
+setopt prompt_cr               # prompt always at beginning of line
+setopt auto_param_slash        # If a parameter is completed whose content is the name of a directory, then add a trailing slash
+setopt mail_warning            # Print a warning message if a mail file has been accessed since the shell last checked
+setopt nonomatch               # Escape URL's special chars (eg.: ?)
+setopt no_list_beep            # Don't beep on an ambiguous completion
+unsetopt menu_complete         # Dont insert completion results immedietly
+unsetopt beep                  # Don't beep
+unsetopt correct_all           # Don't try to autocorrect all arguments
+
+# History
+
+setopt append_history          # Append history to existing file
+setopt inc_append_history      # Append every single command to $HISTFILE immediately after hitting ENTER
+setopt extended_history        # Store timestamp and runtime
+setopt share_history           # Always import new commands from $HISTFILE
+setopt hist_expire_dups_first  # Expire duplicate history entries first
+setopt hist_ignore_dups        # Don't save entries if they are dupes of the previous event
+setopt hist_ignore_space       # If command starts with a space, don't append to history
+setopt hist_find_no_dups       # Don't cycle through dupes
+setopt hist_reduce_blanks      # Trim multiple blanks in history
+
+SAVEHIST=999999
+HISTSIZE=999999
+CASE_SENSITIVE="false"
+
+HISTFILE=~/.zsh_history
+
+###
+### General
+###
+
+# Use emacs mode
+bindkey -e
+
+# Enable colors
+autoload -U colors && colors
+
+###
+### Auto/tab-completions
+###
+
+# Enable bash completion
+# autoload bashcompinit && bashcompinit
+
+# Proper case insensitivity
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Use proper completion
+autoload -U compinit && compinit
+zstyle ':completion:*' menu select
+
+# Add autocomplete for git-extras
+source $HOMEBREW_PREFIX/opt/git-extras/share/git-extras/git-extras-completion.zsh
+
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+        adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
+        dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
+        hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
+        mailman mailnull mldonkey mysql nagios \
+        named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
+        operator pcap postfix postgres privoxy pulse pvm quagga radvd \
+        rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs
+
+# Disable tab character insertion
+zstyle ':completion:*' insert-tab false
+
+###
+### Plugins and prompt
+###
+
+# zplug initialization
+export ZPLUG_HOME=$HOMEBREW_PREFIX/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+# oh-my-zsh initialization
+export ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="robbyrussell"
+source $ZSH/oh-my-zsh.sh
+
+# Load plugins
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "marzocchi/zsh-notify"
+
+zplug mafredri/zsh-async, from:github
+
+# Completions
+zplug "docker/cli", use:contrib/completion/zsh
+zplug "docker/compose", use:contrib/completion/zsh
+zplug "lukechilds/zsh-better-npm-completion", defer:2
+
+# Install packages that have not been installed yet
+if ! zplug check --verbose; then
+    zplug install
+fi
+
+# Load all modules
+zplug load
+
+###
+### Aliases and functions
+###
+
+# Load aliases and functions
+. ~/.zsh_aliases
+. ~/.zsh_functions
+
+###
+### Key bindings
+### (To find out the actual bindings, use Ctrl+V followed by the key in a zsh shell)
+###
+
+# Skip forward/back a word with opt-arrow
+bindkey '[D' backward-word
+bindkey '[C' forward-word
+
+# Make the delete key (or Fn + Delete on the Mac) work instead of outputting a ~
+bindkey '^?' backward-delete-char
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
+bindkey "\e[3~" delete-char
+
+# bind P and N for EMACS mode
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
+
+# bind k and j for VI mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# OS X support
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+###
+### Prompt
+###
+
+# Single line prompt
+prompt_newline='%666v'
+PROMPT=" $PROMPT"
